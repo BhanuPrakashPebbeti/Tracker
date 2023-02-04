@@ -2,19 +2,15 @@ const mongoose = require("mongoose");
 
 const driverSchema = new mongoose.Schema(
   {
-    longitude: [
+    longitude: 
       {
         type: mongoose.Schema.Types.Decimal128,
       },
-    ],
-    latitude: [
+    latitude:
       {
         type: mongoose.Schema.Types.Decimal128,
       },
-    ],
-  },
-  { timestamps: true }
-);
+  },{ timestamps: true });
 
 const Driver = mongoose.model("Driver", driverSchema);
 
