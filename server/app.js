@@ -1,13 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000}));
+app.use(require('./router'));
+app.use(cors({ 
+    credentials: true, 
+    origin: Config.CLIENT_URL.split(','),
+    exposedHeaders: ['set-cookie'] 
+}));
 
 const PORT = 5000;
-const url = "mongodb://localhost:27017/tracker"
+const url = "mongodb://127.0.0.1:27017/tracker"
 
 const connectDB = (url) => {
 
