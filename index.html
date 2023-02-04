@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Driver Location</title>
+</head>
+
+<body>
+    <h2>Find Your Location in below Map</h2>
+    <button onclick="getlocation();"> Show Position</button>
+    <div id="demo" style="width: 600px; height: 400px; margin-left: 200px;"></div>
+
+
+    <script type="text/javascript">
+
+        navigator.geolocation.watchPosition(sendLocationData, showErr, options);
+
+        function sendLocationData(position) {
+            let lat = position.coords.latitude;
+            let long = position.coords.longitude;
+
+            const show = document.getElementById('demo');
+            show.innerHTML = `<h4>lattitude: ${lat}</h4> <h4>Longitude: ${long}</h4>`;
+
+            let data = {
+
+            }
+        }
+
+        let options ={
+            enableHighAccuracy:false,
+            timeout:5000,
+        }
+
+        //Handling Error and Rejection  
+        function showErr(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation API.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("USer location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
+        async function postData(data){
+            let url ="";
+
+            const response = await fetch(url,{
+                method:'POST',
+                mode:"cors",
+                cache:"no-cache",
+                credentials:"same-origin",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            });
+
+            
+        }
+    </script>
+</body>
+
+</html>
