@@ -7,30 +7,41 @@
 
 <body>
     <h2>Find Your Location in below Map</h2>
-    <button onclick="getlocation();"> Show Position</button>
+    <!-- <button onclick="getlocation();"> Show Position</button> -->
     <div id="demo" style="width: 600px; height: 400px; margin-left: 200px;"></div>
 
 
     <script type="text/javascript">
+        let userId = "null";
 
-        navigator.geolocation.watchPosition(sendLocationData, showErr, options);
+        if (document.readyState === 'loading') {  // Loading hasn't finished yet
+            document.addEventListener('DOMContentLoaded', (event) => {
+                navigator.geolocation.watchPosition(sendLocationData, showErr);
+            });
+        } else {  // `DOMContentLoaded` has already fired
+            navigator.geolocation.watchPosition(sendLocationData, showErr);
+        }
 
         function sendLocationData(position) {
             let lat = position.coords.latitude;
             let long = position.coords.longitude;
 
-            const show = document.getElementById('demo');
+            let show = document.getElementById('demo');
             show.innerHTML = `<h4>lattitude: ${lat}</h4> <h4>Longitude: ${long}</h4>`;
 
             let data = {
-
+                id:userId,
+                longitude:long,
+                latitude:lat
             }
+
+            postData(data)
         }
 
-        let options ={
-            enableHighAccuracy:false,
-            timeout:5000,
-        }
+        // let options ={
+        //     enableHighAccuracy:false,
+        //     timeout:5000,
+        // }
 
         //Handling Error and Rejection  
         function showErr(error) {
@@ -50,21 +61,21 @@
             }
         }
 
-        async function postData(data){
-            let url ="";
+        async function postData(data) {
+            let url = "http://localhost:5000/driverlocation";
 
-            const response = await fetch(url,{
-                method:'POST',
-                mode:"cors",
-                cache:"no-cache",
-                credentials:"same-origin",
-                headers:{
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data),
             });
-
-            
+            let resData = response.json();
+            console.log(resData);
         }
     </script>
 </body>
